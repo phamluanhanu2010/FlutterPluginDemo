@@ -1,0 +1,25 @@
+<resources>
+    <string name="record_upload">Upload</string>
+    <string name="record_option_effects">Effects</string>
+    <string name="record_option_beauty">Beauty</string>
+    <string name="record_option_filter">Filter</string>
+    <string name="record_option_music">Music</string>
+    <string name="record_option_timer">Timer</string>
+    <string name="title_record_type_short_clip">Short Clip</string>
+
+
+    /// Text not define in spec
+    <string name="recorder_error_maxed_out">You have already recorded for maximum duration.</string>
+    <string name="recorder_error_in_progress">To do this, please stop recording first.</string>
+    <string name="message_song_change">You cannot change song after recording has started.</string>
+    <string name="message_song_select">You cannot select song after recording has started.</string>
+    <string name="message_timer_is_max">Not enough time left.</string>
+    <string name="confirmation_close_recording">Your current recordings will be discarded. Are you sure?</string>
+    <string name="cancel_button">Cancel</string>
+    <string name="close_button">Close</string>
+    <string name="recorder_error_no_clips">Please record your clip first to continue.</string>
+    <string name="recorder_error_too_short">Record at least 3 seconds.</string>
+    <string name="progress_title">Please wait…</string>
+    <string name="notification_saved_description">The video clip has been successfully saved.</string>
+    <string name="notification_saved_title">Saved to gallery.</string>
+</resources>
