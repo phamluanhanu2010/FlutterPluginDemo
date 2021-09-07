@@ -80,8 +80,9 @@ class PluginCodelabPlugin:
       resultMethodChanel = result
 //      val intent = Intent(this, RecordActivity::class.java)
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
-      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+
       context.startActivity(Intent(context, RecordActivity::class.java))
+      result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else {
       result.notImplemented()
     }
