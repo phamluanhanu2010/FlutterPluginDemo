@@ -72,7 +72,7 @@ class PluginCodelabPlugin:
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "plugin_codelab")
     channel.setMethodCallHandler(this)
       context = flutterPluginBinding.applicationContext
-      context.startActivity(Intent(context, RecordActivity::class.java))
+//      context.startActivity(Intent(context, RecordActivity::class.java))
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -81,6 +81,7 @@ class PluginCodelabPlugin:
 //      val intent = Intent(this, RecordActivity::class.java)
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
       result.success("Android ${android.os.Build.VERSION.RELEASE}")
+      context.startActivity(Intent(context, RecordActivity::class.java))
     } else {
       result.notImplemented()
     }
