@@ -8,6 +8,8 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
+import io.flutter.embedding.engine.plugins.activity.ActivityAware
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding
 import io.flutter.embedding.engine.plugins.util.GeneratedPluginRegister
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
@@ -52,7 +54,7 @@ class PluginCodelabPlugin:
 //  }
 //}
 
-  FlutterPlugin, MethodCallHandler, FlutterActivity() {
+  FlutterPlugin, MethodCallHandler, ActivityAware {
   private val RECORD_VIDEO_ACTIVITY_REQUEST_CODE = 10001
   private lateinit var resultMethodChanel: MethodChannel.Result
   /// The MethodChannel that will the communication between Flutter and native Android
@@ -77,12 +79,30 @@ class PluginCodelabPlugin:
     }
   }
 
-  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-    super.onActivityResult(requestCode, resultCode, data)
-    if (requestCode == RECORD_VIDEO_ACTIVITY_REQUEST_CODE) {
-      resultMethodChanel.success("Close record video activity")
-    }
+  override fun onAttachedToActivity(p0: ActivityPluginBinding) {
+    TODO("Not yet implemented")
+          val intent = Intent(p0.activity, RecordActivity::class.java)
+      p0.activity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
   }
+
+  override fun onDetachedFromActivityForConfigChanges() {
+    TODO("Not yet implemented")
+  }
+
+  override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
+    TODO("Not yet implemented")
+  }
+
+  override fun onDetachedFromActivity() {
+    TODO("Not yet implemented")
+  }
+
+//  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+//    super.onActivityResult(requestCode, resultCode, data)
+//    if (requestCode == RECORD_VIDEO_ACTIVITY_REQUEST_CODE) {
+//      resultMethodChanel.success("Close record video activity")
+//    }
+//  }
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
