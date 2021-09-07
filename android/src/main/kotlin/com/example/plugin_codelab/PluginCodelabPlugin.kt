@@ -1,5 +1,7 @@
 package com.example.plugin_codelab
 
+import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.annotation.NonNull
@@ -57,6 +59,9 @@ class PluginCodelabPlugin:
   FlutterPlugin, MethodCallHandler, ActivityAware {
   private val RECORD_VIDEO_ACTIVITY_REQUEST_CODE = 10001
   private lateinit var resultMethodChanel: MethodChannel.Result
+
+    private lateinit var context: Context
+    private lateinit var activity: Activity
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -66,6 +71,8 @@ class PluginCodelabPlugin:
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
     channel = MethodChannel(flutterPluginBinding.binaryMessenger, "plugin_codelab")
     channel.setMethodCallHandler(this)
+      context = flutterPluginBinding.applicationContext
+      context.startActivity(Intent(context, RecordActivity::class.java))
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
@@ -81,8 +88,8 @@ class PluginCodelabPlugin:
 
   override fun onAttachedToActivity(p0: ActivityPluginBinding) {
     TODO("Not yet implemented")
-          val intent = Intent(p0.activity, RecordActivity::class.java)
-      p0.activity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
+//          val intent = Intent(p0.activity, RecordActivity::class.java)
+//      p0.activity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
