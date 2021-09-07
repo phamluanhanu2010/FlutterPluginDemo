@@ -69,9 +69,9 @@ class PluginCodelabPlugin:
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "getPlatformVersion") {
       resultMethodChanel = result
-      val intent = Intent(this, RecordActivity::class.java)
-      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
-//      result.success("Android ${android.os.Build.VERSION.RELEASE}")
+//      val intent = Intent(this, RecordActivity::class.java)
+//      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
+      result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else {
       result.notImplemented()
     }
