@@ -90,8 +90,8 @@ class PluginCodelabPlugin:
 
   override fun onAttachedToActivity(p0: ActivityPluginBinding) {
     TODO("Not yet implemented")
-//          val intent = Intent(p0.activity, RecordActivity::class.java)
-//      p0.activity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
+          val intent = Intent(p0.activity, RecordActivity::class.java)
+      p0.activity.startActivity(intent)
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
