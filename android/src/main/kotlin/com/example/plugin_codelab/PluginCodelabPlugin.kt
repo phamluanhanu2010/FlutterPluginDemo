@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.NonNull
 import com.example.videoeditor.RecordActivity
 import io.flutter.embedding.android.FlutterActivity
@@ -26,7 +25,7 @@ import io.flutter.plugin.common.PluginRegistry.Registrar
 
 
 /** PluginCodelabPlugin */
-class PluginCodelabPlugin(val mActivity: Activity):
+class PluginCodelabPlugin:
 // FlutterActivity() {
 //  private val CHANNEL = "plugin_codelab"
 //  private val RECORD_VIDEO_ACTIVITY_REQUEST_CODE = 10001
@@ -68,7 +67,7 @@ class PluginCodelabPlugin(val mActivity: Activity):
   private lateinit var resultMethodChanel: MethodChannel.Result
 
     private lateinit var context: Context
-    private lateinit var activity: Activity
+    private var activity: Activity? = null
   /// The MethodChannel that will the communication between Flutter and native Android
   ///
   /// This local reference serves to register the plugin with the Flutter Engine and unregister it
@@ -90,9 +89,9 @@ class PluginCodelabPlugin(val mActivity: Activity):
       resultMethodChanel = result
 //      val intent = Intent(this, RecordActivity::class.java)
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
-//      val intent = Intent(mActivity, RecordActivity::class.java)
-//      intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-//      mActivity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
+      val intent = Intent(this.activity, RecordActivity::class.java)
+      intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+      this.activity?.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
 //      result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else {
       result.notImplemented()
@@ -103,7 +102,7 @@ class PluginCodelabPlugin(val mActivity: Activity):
     Log.e("LuanPV", "onAttachedToActivity" )
     println("LuanPV-onAttachedToActivity")
     this.activity = p0.activity
-//    p0.addActivityResultListener(this)
+    p0.addActivityResultListener(this)
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
@@ -127,18 +126,7 @@ class PluginCodelabPlugin(val mActivity: Activity):
 
   override fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Boolean {
     Log.e("LuanPV", "${p0}:${p1}" )
-    Toast.makeText(mActivity, "onActivityResult", Toast.LENGTH_LONG).show()
     return false
-  }
-
-  companion object {
-    @JvmStatic
-    fun registerWith(registrar: Registrar) {
-      val channel = MethodChannel(registrar.messenger(), "lx_video_editer")
-      val plugin = PluginCodelabPlugin(registrar.activity())
-      channel.setMethodCallHandler(plugin)
-      registrar.addActivityResultListener(plugin)
-    }
   }
 
 }
