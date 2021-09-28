@@ -19,6 +19,10 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
 import io.flutter.plugin.common.PluginRegistry
+import io.flutter.plugin.common.PluginRegistry.Registrar
+
+
+
 
 /** PluginCodelabPlugin */
 class PluginCodelabPlugin:
@@ -79,6 +83,7 @@ class PluginCodelabPlugin:
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "startRecordActivity") {
+      Log.e("LuanPV", "onMethodCall" )
       resultMethodChanel = result
 //      val intent = Intent(this, RecordActivity::class.java)
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
@@ -92,7 +97,7 @@ class PluginCodelabPlugin:
   }
 
   override fun onAttachedToActivity(p0: ActivityPluginBinding) {
-    TODO("Not yet implemented")
+    Log.e("LuanPV", "onAttachedToActivity" )
     activity = p0.activity
     p0.addActivityResultListener(this)
   }
