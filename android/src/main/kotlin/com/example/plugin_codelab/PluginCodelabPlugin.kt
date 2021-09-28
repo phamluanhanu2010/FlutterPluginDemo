@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.annotation.NonNull
 import com.example.videoeditor.RecordActivity
 import io.flutter.embedding.android.FlutterActivity
@@ -17,6 +18,7 @@ import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler
 import io.flutter.plugin.common.MethodChannel.Result
+import io.flutter.plugin.common.PluginRegistry
 
 /** PluginCodelabPlugin */
 class PluginCodelabPlugin:
@@ -56,7 +58,7 @@ class PluginCodelabPlugin:
 //  }
 //}
 
-  FlutterPlugin, MethodCallHandler, ActivityAware {
+  FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
   private val RECORD_VIDEO_ACTIVITY_REQUEST_CODE = 10001
   private lateinit var resultMethodChanel: MethodChannel.Result
 
@@ -69,20 +71,20 @@ class PluginCodelabPlugin:
   private lateinit var channel : MethodChannel
 
   override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "plugin_codelab")
+    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "lx_video_editer")
     channel.setMethodCallHandler(this)
       context = flutterPluginBinding.applicationContext
 //      context.startActivity(Intent(context, RecordActivity::class.java))
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "getPlatformVersion") {
+    if (call.method == "startRecordActivity") {
       resultMethodChanel = result
 //      val intent = Intent(this, RecordActivity::class.java)
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
-      val intent = Intent(context, RecordActivity::class.java)
+      val intent = Intent(activity, RecordActivity::class.java)
       intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-      context.startActivity(intent)
+      activity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
 //      result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else {
       result.notImplemented()
@@ -91,8 +93,8 @@ class PluginCodelabPlugin:
 
   override fun onAttachedToActivity(p0: ActivityPluginBinding) {
     TODO("Not yet implemented")
-          val intent = Intent(p0.activity, RecordActivity::class.java)
-      p0.activity.startActivity(intent)
+    activity = p0.activity
+    p0.addActivityResultListener(this)
   }
 
   override fun onDetachedFromActivityForConfigChanges() {
@@ -107,14 +109,14 @@ class PluginCodelabPlugin:
     TODO("Not yet implemented")
   }
 
-//  override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-//    super.onActivityResult(requestCode, resultCode, data)
-//    if (requestCode == RECORD_VIDEO_ACTIVITY_REQUEST_CODE) {
-//      resultMethodChanel.success("Close record video activity")
-//    }
-//  }
+
 
   override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
     channel.setMethodCallHandler(null)
+  }
+
+  override fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Boolean {
+    Log.e("LuanPV", "${p0}:${p1}" )
+    return false
   }
 }
