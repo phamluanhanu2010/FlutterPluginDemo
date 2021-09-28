@@ -79,17 +79,19 @@ class PluginCodelabPlugin:
     channel.setMethodCallHandler(this)
       context = flutterPluginBinding.applicationContext
 //      context.startActivity(Intent(context, RecordActivity::class.java))
+
   }
 
   override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
     if (call.method == "startRecordActivity") {
       Log.e("LuanPV", "onMethodCall" )
+      println("LuanPV-onMethodCall")
       resultMethodChanel = result
 //      val intent = Intent(this, RecordActivity::class.java)
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
-      val intent = Intent(activity, RecordActivity::class.java)
+      val intent = Intent(this.activity, RecordActivity::class.java)
       intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-      activity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
+      this.activity.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
 //      result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else {
       result.notImplemented()
@@ -98,7 +100,8 @@ class PluginCodelabPlugin:
 
   override fun onAttachedToActivity(p0: ActivityPluginBinding) {
     Log.e("LuanPV", "onAttachedToActivity" )
-    activity = p0.activity
+    println("LuanPV-onAttachedToActivity")
+    this.activity = p0.activity
     p0.addActivityResultListener(this)
   }
 
@@ -107,7 +110,8 @@ class PluginCodelabPlugin:
   }
 
   override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
-    TODO("Not yet implemented")
+    this.activity = p0.activity
+    println("LuanPV-onReattachedToActivityForConfigChanges")
   }
 
   override fun onDetachedFromActivity() {
@@ -124,4 +128,5 @@ class PluginCodelabPlugin:
     Log.e("LuanPV", "${p0}:${p1}" )
     return false
   }
+
 }
