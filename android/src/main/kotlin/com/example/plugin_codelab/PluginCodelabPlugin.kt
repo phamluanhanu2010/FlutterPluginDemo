@@ -91,7 +91,7 @@ class PluginCodelabPlugin:
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
       val intent = Intent(this.activity, RecordActivity::class.java)
       intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-      this.activity?.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
+//      this.activity?.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
 //      result.success("Android ${android.os.Build.VERSION.RELEASE}")
     } else {
       result.notImplemented()
