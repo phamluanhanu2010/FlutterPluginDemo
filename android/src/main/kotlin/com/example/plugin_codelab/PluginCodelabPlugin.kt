@@ -22,11 +22,8 @@ import io.flutter.plugin.common.PluginRegistry
 import io.flutter.plugin.common.PluginRegistry.Registrar
 
 
-
-
-
 /** PluginCodelabPlugin */
-class PluginCodelabPlugin:
+class PluginCodelabPlugin :
 // FlutterActivity() {
 //  private val CHANNEL = "plugin_codelab"
 //  private val RECORD_VIDEO_ACTIVITY_REQUEST_CODE = 10001
@@ -63,71 +60,81 @@ class PluginCodelabPlugin:
 //  }
 //}
 
-  FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
-  private val RECORD_VIDEO_ACTIVITY_REQUEST_CODE = 10001
-  private lateinit var resultMethodChanel: MethodChannel.Result
+    FlutterPlugin, MethodCallHandler, ActivityAware, PluginRegistry.ActivityResultListener {
+    private val RECORD_VIDEO_ACTIVITY_REQUEST_CODE = 10001
+    private lateinit var resultMethodChanel: MethodChannel.Result
 
     private lateinit var context: Context
     private var activity: Activity? = null
-  /// The MethodChannel that will the communication between Flutter and native Android
-  ///
-  /// This local reference serves to register the plugin with the Flutter Engine and unregister it
-  /// when the Flutter Engine is detached from the Activity
-  private lateinit var channel : MethodChannel
 
-  override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
-    channel = MethodChannel(flutterPluginBinding.binaryMessenger, "lx_video_editer")
-    channel.setMethodCallHandler(this)
-      context = flutterPluginBinding.applicationContext
+    /// The MethodChannel that will the communication between Flutter and native Android
+    ///
+    /// This local reference serves to register the plugin with the Flutter Engine and unregister it
+    /// when the Flutter Engine is detached from the Activity
+    private lateinit var channel: MethodChannel
+
+    override fun onAttachedToEngine(@NonNull flutterPluginBinding: FlutterPlugin.FlutterPluginBinding) {
+        channel = MethodChannel(flutterPluginBinding.binaryMessenger, "lx_video_editer")
+        channel.setMethodCallHandler(this)
+        context = flutterPluginBinding.applicationContext
 //      context.startActivity(Intent(context, RecordActivity::class.java))
 
-  }
+    }
 
-  override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
-    if (call.method == "startRecordActivity") {
-      Log.e("LuanPV", "onMethodCall" )
-      println("LuanPV-onMethodCall")
-      resultMethodChanel = result
+    override fun onMethodCall(@NonNull call: MethodCall, @NonNull result: Result) {
+        if (call.method == "startRecordActivity") {
+            Log.e("LuanPV", "onMethodCall")
+            println("LuanPV-onMethodCall")
+            resultMethodChanel = result
 //      val intent = Intent(this, RecordActivity::class.java)
 //      startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
-      val intent = Intent(this.activity, RecordActivity::class.java)
-      intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-      this.activity?.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
+            val intent = Intent(this.activity, RecordActivity::class.java)
+            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            this.activity?.startActivityForResult(intent, RECORD_VIDEO_ACTIVITY_REQUEST_CODE)
 //      result.success("Android ${android.os.Build.VERSION.RELEASE}")
-    } else {
-      result.notImplemented()
+        } else {
+            result.notImplemented()
+        }
     }
-  }
 
-  override fun onAttachedToActivity(p0: ActivityPluginBinding) {
-    Log.e("LuanPV", "onAttachedToActivity" )
-    println("LuanPV-onAttachedToActivity")
-    this.activity = p0.activity
-    p0.addActivityResultListener(this)
-  }
+    override fun onAttachedToActivity(p0: ActivityPluginBinding) {
+        Log.e("LuanPV", "onAttachedToActivity")
+        println("LuanPV-onAttachedToActivity")
+        this.activity = p0.activity
+        p0.addActivityResultListener(this)
+    }
 
-  override fun onDetachedFromActivityForConfigChanges() {
-    TODO("Not yet implemented")
-  }
+    override fun onDetachedFromActivityForConfigChanges() {
+        TODO("Not yet implemented")
+    }
 
-  override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
-    this.activity = p0.activity
-    println("LuanPV-onReattachedToActivityForConfigChanges")
-  }
+    override fun onReattachedToActivityForConfigChanges(p0: ActivityPluginBinding) {
+        this.activity = p0.activity
+        println("LuanPV-onReattachedToActivityForConfigChanges")
+    }
 
-  override fun onDetachedFromActivity() {
-    TODO("Not yet implemented")
-  }
-
+    override fun onDetachedFromActivity() {
+        TODO("Not yet implemented")
+    }
 
 
-  override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
-    channel.setMethodCallHandler(null)
-  }
+    override fun onDetachedFromEngine(@NonNull binding: FlutterPlugin.FlutterPluginBinding) {
+        channel.setMethodCallHandler(null)
+    }
 
-  override fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Boolean {
-    Log.e("LuanPV", "${p0}:${p1}" )
-    return false
-  }
+
+    override fun onActivityResult(p0: Int, p1: Int, p2: Intent?): Boolean {
+        Log.e("LuanPV", "${p0}:${p1}")
+        if (p0 == RECORD_VIDEO_ACTIVITY_REQUEST_CODE) {
+            p2?.let {
+                if (it.extras!!.containsKey("MEDIA_ID")) {
+                    val mediaId = it.extras!!.get("MEDIA_ID")
+                    val videoThumb = it.extras!!.get("VIDEO_THUMB")
+                    resultMethodChanel.success("${mediaId}, ${videoThumb}")
+                }
+            }
+        }
+        return false
+    }
 
 }
