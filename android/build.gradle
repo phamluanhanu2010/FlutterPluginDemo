@@ -6,6 +6,7 @@ buildscript {
     repositories {
         google()
         jcenter()
+        mavenCentral()
     }
 
     dependencies {
@@ -18,6 +19,18 @@ rootProject.allprojects {
     repositories {
         google()
         jcenter()
+        mavenCentral()
+        maven {
+            url = uri("https://gitlab.com/api/v4/projects/23915120/packages/maven")
+            name "GitLab"
+            credentials(HttpHeaderCredentials) {
+                name = "Private-Token"
+                value = "JCy3JhyraMMV2FsxbEzG"
+            }
+            authentication {
+                header(HttpHeaderAuthentication)
+            }
+        }
     }
 }
 
@@ -43,6 +56,9 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:2.1.0'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
+    implementation 'com.beu:videoeditor:1.0.0'
+//    implementation files('tmplibs/flutter.jar')
 //    implementation files('tmplibs/flutter.jar')
 //    api project(path: ':videoeditor')
 //    implementation project(path: ':testlib')
